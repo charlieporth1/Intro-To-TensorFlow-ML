@@ -3,14 +3,14 @@
 # Necessary for newer version of matplotlib
 import warnings
 
-warnings.filterwarnings("ignore", category=UserWarning, module="matplotlib")
+
 #
 # Display inline matplotlib plots with IPython
 from IPython import get_ipython
 
-get_ipython().run_line_magic('matplotlib', 'inline')
-###########################################
 
+###########################################
+import matplotlib
 import matplotlib.pyplot as pl
 import matplotlib.patches as mpatches
 import numpy as np
@@ -18,6 +18,10 @@ import pandas as pd
 from time import time
 from sklearn.metrics import f1_score, accuracy_score
 from IPython.display import display
+
+matplotlib.use('WebAgg')
+warnings.filterwarnings("ignore", category=UserWarning, module="matplotlib")
+get_ipython().run_line_magic('matplotlib', 'inline')
 
 
 def distribution(data, transformed=False):
@@ -41,13 +45,10 @@ def distribution(data, transformed=False):
 
     # Plot aesthetics
     if transformed:
-        fig.suptitle("Log-transformed Distributions of Continuous Census Data Features", \
-                     fontsize=16, y=1.03)
+        fig.suptitle("Log-transformed Distributions of Continuous Census Data Features", fontsize=16, y=1.03)
     else:
-        fig.suptitle("Skewed Distributions of Continuous Census Data Features", \
-                     fontsize=16, y=1.03)
-    fig.savefig()
-    fig.tight_layout()
+        fig.suptitle("Skewed Distributions of Continuous Census Data Features", fontsize=16, y=1.03)
+
     fig.show()
     display(fig)
 
@@ -113,13 +114,11 @@ def evaluate(results, accuracy, f1):
     patches = []
     for i, learner in enumerate(results.keys()):
         patches.append(mpatches.Patch(color=colors[i], label=learner))
-    pl.legend(handles=patches, bbox_to_anchor=(-.80, 2.53), \
-              loc='upper center', borderaxespad=0., ncol=3, fontsize='x-large')
+    pl.legend(handles=patches, bbox_to_anchor=(-.80, 2.53),  loc='upper center', borderaxespad=0., ncol=3, fontsize='x-large')
 
     # Aesthetics
-    fig.savefig()
     pl.suptitle("Performance Metrics for Three Supervised Learning Models", fontsize=16, y=1.10)
-    pl.tight_layout()
+
     pl.show()
     display(fig)
 
@@ -143,9 +142,8 @@ def feature_plot(importances, X_train, y_train):
     pl.ylabel("Weight", fontsize=12)
     pl.xlabel("Feature", fontsize=12)
 
-    fig.savefig()
     pl.legend(loc='upper center')
-    pl.tight_layout()
+
     pl.show()
     display(fig)
 
